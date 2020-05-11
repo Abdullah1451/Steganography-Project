@@ -131,7 +131,7 @@
         <Property name="font" type="java.awt.Font" editor="org.netbeans.beaninfo.editors.FontEditor">
           <Font name="Arial" size="15" style="3"/>
         </Property>
-        <Property name="text" type="java.lang.String" value="                                                                                                                                                  PNG IMAGES ONLY"/>
+        <Property name="text" type="java.lang.String" value="                                                                                                                                   BMP AND PNG IMAGES ONLY"/>
       </Properties>
     </Component>
   </SubComponents>

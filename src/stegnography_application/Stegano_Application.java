@@ -64,7 +64,7 @@ public class Stegano_Application extends javax.swing.JFrame {
         jLabel2.setText("        STEGANOGRAPHY");
 
         jLabel3.setFont(new java.awt.Font("Arial", 3, 15)); // NOI18N
-        jLabel3.setText("                                                                                                                                                  PNG IMAGES ONLY");
+        jLabel3.setText("                                                                                                                                   BMP AND PNG IMAGES ONLY");
 
         javax.swing.GroupLayout layout = new javax.swing.GroupLayout(getContentPane());
         getContentPane().setLayout(layout);
