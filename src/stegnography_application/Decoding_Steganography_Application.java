@@ -406,6 +406,11 @@ public class Decoding_Steganography_Application {
                         name = JOptionPane.showInputDialog("Enter Image Name");
                         path = path + "\\" + name + "." + extension;
                         break;
+                        
+                    case "bmp":
+                        name = JOptionPane.showInputDialog("Enter Image Name");
+                        path = path + "\\" + name + "." + extension;
+                        break;
                 }
                 File ob	  =   new File(path);
                 FileOutputStream nf = new FileOutputStream(ob);

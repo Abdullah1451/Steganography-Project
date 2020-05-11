@@ -30,15 +30,14 @@ public class Encoding_Stegnography_Application {
         offset = 0;
     }
 
-    public boolean encode(String image_name, String stegano_image_name,String secretMessageOrPath){
-
+    public boolean encode(String image_name, String stegano_image_name, String ext,String secretMessageOrPath){
         BufferedImage orignal_image = getImage(image_name);
         
         //user space is not necessary for Encrypting
         BufferedImage new_image = user_space(orignal_image);
         new_image = add_text(new_image,secretMessageOrPath);
 
-        return(setImage(new_image,new File(stegano_image_name),"png"));
+        return(setImage(new_image,new File(stegano_image_name),ext));
     }
 
 
@@ -374,7 +373,7 @@ public class Encoding_Stegnography_Application {
                 }
                 else{
                     String oneByteOfImage = Integer.toBinaryString(img[offset]);// One Image Byte Is Converting To Binary String
-                                    //System.out.println("\n\noneByteOfImage  ::::  "+oneByteOfImage+"  img[offset] ::  "+img[offset]+"   ::::   " +dataByte.charAt(bit) + dataByte.charAt(bit+1));
+                                    System.out.println("\n\noneByteOfImage  ::::  "+oneByteOfImage+"  img[offset] ::  "+offset+"   ::::   " +dataByte.charAt(bit) + dataByte.charAt(bit+1));
                     //Replacing Last One Bit Of Message Or Length Binary String To Image Binary String 
                     oneByteOfImage = oneByteOfImage.substring(0, oneByteOfImage.length() - 2) + dataByte.charAt(bit) + dataByte.charAt(bit+1);
                     bit++;

@@ -122,34 +122,18 @@ public class Select_Image extends javax.swing.JFrame {
 
     private void SelectImageButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_SelectImageButtonActionPerformed
         // TODO add your handling code here:
-        JFileChooser chooser = new JFileChooser();
-        FileNameExtensionFilter fnef = new FileNameExtensionFilter("IMAGES", "png", "jpg", "jpeg");
-        chooser.addChoosableFileFilter(fnef);
-        int showOpenDialog = chooser.showOpenDialog(null);
-
+        File_Chooser fileChooser = new File_Chooser();
+        File file = fileChooser.file_Chooser(ImageLabel);
+        
         try {
-            if(showOpenDialog == JFileChooser.APPROVE_OPTION){
-                File file = chooser.getSelectedFile();
-                String mimetype = Files.probeContentType(file.toPath());
-
-                if(mimetype != null && (mimetype.split("/")[1].equals("jpeg") || mimetype.split("/")[1].equals("png"))){
-                    String imagePath = file.getAbsolutePath();
-                    set_ImagePath(imagePath);
-                    set_ImageMimeType(mimetype.split("/")[1]);
-                    
-                    ImageIcon imageicon = new ImageIcon(imagePath);
-                    Image image = imageicon.getImage().getScaledInstance(ImageLabel.getWidth(), ImageLabel.getHeight(), Image.SCALE_SMOOTH);
-                    ImageLabel.setIcon(new ImageIcon(image));
-                }
-                else{
-                    JOptionPane.showMessageDialog(null, "File Is Not An Text File","WRONG FILE",JOptionPane.ERROR_MESSAGE);
-                }
-
-            }
+            String mimetype = Files.probeContentType(file.toPath());
+            set_ImageMimeType(mimetype.split("/")[1]);
         }
         catch (IOException ex) {
-            Logger.getLogger(Select_Text_File.class.getName()).log(Level.SEVERE, null, ex);
+            Logger.getLogger(Select_Image.class.getName()).log(Level.SEVERE, null, ex);
         }
+        
+        set_ImagePath(file.getAbsolutePath());
 
     }//GEN-LAST:event_SelectImageButtonActionPerformed
 

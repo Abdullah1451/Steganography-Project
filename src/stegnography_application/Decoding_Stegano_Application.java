@@ -100,34 +100,29 @@ public class Decoding_Stegano_Application extends javax.swing.JFrame {
 
     private void SelectSteganoImageButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_SelectSteganoImageButtonActionPerformed
         // TODO add your handling code here:
-        JFileChooser chooser = new JFileChooser();
-        FileNameExtensionFilter fnef = new FileNameExtensionFilter("IMAGES", "png");
-        chooser.addChoosableFileFilter(fnef);
-        int showOpenDialog = chooser.showOpenDialog(null);
+        File file;
+        String imagePath;
+        boolean pngbool, bmpbool;
+        do{
+            ShowSteganoImageLabel.setIcon(null);
+            File_Chooser fileChooser = new File_Chooser();
+            file = fileChooser.file_Chooser(ShowSteganoImageLabel);
 
-        try {
-            if(showOpenDialog == JFileChooser.APPROVE_OPTION){
-                File file = chooser.getSelectedFile();
-                String mimetype = Files.probeContentType(file.toPath());
-
-                if(mimetype != null && mimetype.split("/")[1].equals("png")){
-                    String imagePath = file.getAbsolutePath();
-                    set_SteganoImagePath(imagePath);
-                    setPath(file.getParent());
-                    
-                    ImageIcon imageicon = new ImageIcon(imagePath);
-                    Image image = imageicon.getImage().getScaledInstance(ShowSteganoImageLabel.getWidth(), ShowSteganoImageLabel.getHeight(), Image.SCALE_SMOOTH);
-                    ShowSteganoImageLabel.setIcon(new ImageIcon(image));
-                }
-                else{
-                    JOptionPane.showMessageDialog(null, "This Image Is Not An '.png' Image","NOT PNG IMAGE",JOptionPane.ERROR_MESSAGE);
-                }
-
+            imagePath = file.getAbsolutePath();
+            
+            pngbool = imagePath.endsWith(".png");
+            bmpbool = imagePath.endsWith(".bmp");
+            if(pngbool){
+                bmpbool = pngbool;
+            }
+            else if(bmpbool){
+                pngbool = bmpbool;
             }
         }
-        catch (IOException ex) {
-            Logger.getLogger(Select_Text_File.class.getName()).log(Level.SEVERE, null, ex);
-        }
+        while(pngbool != true || bmpbool != true);    
+
+        set_SteganoImagePath(imagePath);
+        setPath(file.getParent());
 
     }//GEN-LAST:event_SelectSteganoImageButtonActionPerformed
 

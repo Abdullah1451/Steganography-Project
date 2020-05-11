@@ -5,10 +5,17 @@
  */
 package stegnography_application;
 
+import java.awt.Graphics2D;
 import java.awt.Image;
+import java.awt.RenderingHints;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
+import java.awt.image.BufferedImage;
 import java.io.File;
+import java.io.IOException;
+import java.util.logging.Level;
+import java.util.logging.Logger;
+import javax.imageio.ImageIO;
 import javax.swing.ImageIcon;
 import javax.swing.JFileChooser;
 import javax.swing.JOptionPane;
@@ -24,7 +31,7 @@ public class Encoding_Stegano_Application extends javax.swing.JFrame {
     
     //My Private Variables Declaration
     private static String coverImagePath;
-    private static String path;
+    private static String path ;
     private static boolean selectCoverImageButtonIsPressed = false;
     private static boolean MessageButtonIsPressed = false;
     //End Private Variables Declaration
@@ -156,23 +163,15 @@ public class Encoding_Stegano_Application extends javax.swing.JFrame {
 
     private void SelectCoverImageButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_SelectCoverImageButtonActionPerformed
         // TODO add your handling code here:
-        JFileChooser chooser = new JFileChooser();
-        FileNameExtensionFilter fnef = new FileNameExtensionFilter("IMAGES", "png", "jpg", "jpeg");
-        chooser.addChoosableFileFilter(fnef);
-        int showOpenDialog = chooser.showOpenDialog(null);
-        
-        if(showOpenDialog == JFileChooser.APPROVE_OPTION){
-            File file = chooser.getSelectedFile();
-            String imagePath = file.getAbsolutePath();
-            set_CoverImagePath(imagePath);
-            setPath(file.getParent());
-            
-            ImageIcon imageicon = new ImageIcon(imagePath);
-            Image image = imageicon.getImage().getScaledInstance(jLabelImage.getWidth(), jLabelImage.getHeight(), Image.SCALE_SMOOTH);
-            jLabelImage.setIcon(new ImageIcon(image));
-        }
-    }//GEN-LAST:event_SelectCoverImageButtonActionPerformed
+        File_Chooser fileChooser = new File_Chooser();
+        File file = fileChooser.file_Chooser(jLabelImage);
 
+        set_CoverImagePath(file.getAbsolutePath());
+        setPath(file.getParent());
+
+    }//GEN-LAST:event_SelectCoverImageButtonActionPerformed
+ 
+    
     private void MessageButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_MessageButtonActionPerformed
         // TODO add your handling code here:
         MessageButtonIsPressed = true;
@@ -186,6 +185,11 @@ public class Encoding_Stegano_Application extends javax.swing.JFrame {
         if(MessageButtonIsPressed == true && selectCoverImageButtonIsPressed == true){
             String steganoImageName;
             steganoImageName = JOptionPane.showInputDialog("Enter The Name Of Stegano Image");
+            
+            while(steganoImageName.isEmpty()){
+                steganoImageName = JOptionPane.showInputDialog("Enter The Name Of Stegano Image");
+            }
+            
             Calling_Encode(steganoImageName);
             
             int again = JOptionPane.showConfirmDialog(null, "Do you want to do again?", "AGAIN",JOptionPane.YES_NO_OPTION, JOptionPane.QUESTION_MESSAGE);
@@ -330,28 +334,37 @@ public class Encoding_Stegano_Application extends javax.swing.JFrame {
     /****CALLING ENCODE METHOD IN CLASS Steganography_Application() TO ENCODE SECRET MESSAGE****/
     private void Calling_Encode(String steganoImageName) {
         boolean bool = false;
-        steganoImageName = path + "\\" + steganoImageName + "." + "png";
+        String ext = null;
+        if(coverImagePath.endsWith(".png")){
+            steganoImageName = path + "\\" + steganoImageName + ".png";
+            ext = "png";
+        }
+        else if(coverImagePath.endsWith(".bmp")){
+            steganoImageName = path + "\\" + steganoImageName + ".bmp";
+            ext = "bmp";
+        }
+        
         Encoding_Stegnography_Application stegnography_Application = new Encoding_Stegnography_Application();
         Message_Type message_Type = new Message_Type();
         
         if(message_Type.getMessage_Type().equals(" TEXT FILE")){
             Select_Text_File select_text_file = new Select_Text_File();
-            bool = stegnography_Application.encode(coverImagePath, steganoImageName, select_text_file.get_TextFilePath());
+            bool = stegnography_Application.encode(coverImagePath, steganoImageName, ext, select_text_file.get_TextFilePath());
         }
         
         else if(message_Type.getMessage_Type().equals(" IMAGE")){
             Select_Image select_image = new Select_Image();
-            bool = stegnography_Application.encode(coverImagePath, steganoImageName, select_image.get_ImagePath());
+            bool = stegnography_Application.encode(coverImagePath, steganoImageName, ext, select_image.get_ImagePath());
         }
         
         else if(message_Type.getMessage_Type().equals(" PDF FILE")){
             Select_Pdf_File select_pdf_file = new Select_Pdf_File();
-            bool = stegnography_Application.encode(coverImagePath, steganoImageName, select_pdf_file.get_PdfFilePath());
+            bool = stegnography_Application.encode(coverImagePath, steganoImageName, ext, select_pdf_file.get_PdfFilePath());
         }
         
         else if(message_Type.getMessage_Type().equals(" MESSAGE ")){
             Enter_Message enter_Message = new Enter_Message();
-            bool = stegnography_Application.encode(coverImagePath, steganoImageName, enter_Message.get_EnteredMessage());
+            bool = stegnography_Application.encode(coverImagePath, steganoImageName, ext, enter_Message.get_EnteredMessage());
         }
 
 
@@ -359,7 +372,7 @@ public class Encoding_Stegano_Application extends javax.swing.JFrame {
             JOptionPane.showMessageDialog(null, "DONE YEAH HURRAY");
         }
         else{
-             JOptionPane.showMessageDialog(null, "NOT DONE YEAH HURRAY");
+             JOptionPane.showMessageDialog(null, "NOT DONE");
         }
     }
 
